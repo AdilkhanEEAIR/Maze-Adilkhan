@@ -32,3 +32,14 @@ function makeMaze(r,c){
     maze[r - 2][c - 2] = 0; // Финиш
     return maze; 
 }
+
+//Функция для перемешки направлений массива
+function shuffle(array) {
+    for(let i = array.length - 1; i>0; i--){
+        let j = Math.floor(Math.random() * (i + 1)); // Случайный индекс
+        let tmp = array[i]; // Меняем местами
+        array[i] = array[j];
+        array[j] = tmp;
+    }
+    return array;
+}
