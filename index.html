@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лабиринт с рекурсией</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <section class="section">
         <div class="container">
             <h1>Лабиринт</h1>
-            <div id="maze"></div>
-            <button onclick="start()">Сгенерировать и пройти</button>
-            
+            <div class="input-group">
+                <label for="rows">Строк:</label>
+                <input type="number" id="rows" value="10" min="10" max="50">
+                <label for="cols">Столбцов:</label>
+                <input type="number" id="cols" value="10" min="10" max="50">
+                <button onclick="start()">Сгенерировать и пройти</button>
+            </div>
+
+            <div id="maze" class="maze"></div>
         </div>
     </section>
     <script src="app.js"></script>
