@@ -49,3 +49,31 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+#maze {
+    display: grid;
+    margin-top: 20px;
+    gap: 2px;
+}
+/* Сетка для лабиринта */
+.cell {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border-radius: 2px;
+}
+/* Клетка через которую можно пройти */
+.path{
+    background-color: white;
+}
+/* Стартовая клетка */
+.start{
+    background-color: green;
+}
+/* Конец */
+.end{
+    background-color: red;
+}
+/* Обьект, который проходит по лабиринту */
+.player {
+    background-color: purple !important;
+}
