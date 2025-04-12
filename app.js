@@ -43,3 +43,21 @@ function shuffle(array) {
     }
     return array;
 }
+// Функция рисования лабиринта
+function drawMaze(rows, cols) {
+    let mazeDiv = document.getElementById('maze'); 
+    mazeDiv.innerHTML = ''; // Обнуляем старое, если оно было
+    mazeDiv.style.gridTemplateColumns = `repeat(${cols}, 20px)`; //Сетка
+    // Цикл для стилизации строк и колонок
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let cell = document.createElement('div'); // Ячейка
+            cell.classList.add('cell'); 
+            if (maze[i][j] === 0) cell.classList.add('path'); // Путь
+            if (i === 1 && j === 1) cell.classList.add('start'); // Старт
+            if (i === rows - 2 && j === cols - 2) cell.classList.add('end'); // Крнец
+            cell.id = `cell-${i}-${j}`; // Уникальный ID
+            mazeDiv.appendChild(cell); // Добавляем в контейнер
+        }
+    }
+}
