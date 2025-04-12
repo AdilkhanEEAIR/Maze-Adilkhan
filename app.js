@@ -1,8 +1,7 @@
-let maze = []; //Хранилище лабиринта
-let path = []; //Хранилище пути
-//Создание нового лабиринта
+let maze = [];
+let path = []; 
 function makeMaze(r,c){
-    let m =[]; //Новый лабиринт
+    let m =[]; // Создаем пустой массив
     //Заполнение стенами
     for(let i=0;i<r;i++){
        let row = [];
@@ -11,24 +10,23 @@ function makeMaze(r,c){
         }
         m.push(row); // Добавляем строку в лабиринт
     }
-    
+    //Рекурсия для создания лабиринта
     function makePath(x,y){
         let dirs = shuffle([[0, -2], [0, 2], [-2, 0], [2, 0]]); // Случайные направления
         for (let i = 0; i < dirs.length; i++) {
-            let dx = dirs[i][0]; // Изменение по x
-            let dy = dirs[i][1]; // Изменение по y
+            let dx = dirs[i][0]; 
+            let dy = dirs[i][1]; 
             let nx = x + dx; // Новая координата x
             let ny = y + dy; // Новая координата y
-            // Если в пределах поля и ещё не вырезано
             if (nx > 0 && ny > 0 && nx < r - 1 && ny < c - 1 && maze[nx][ny] === 1) {
                 maze[nx - dx / 2][ny - dy / 2] = 0; // Убираем стену 
                 maze[nx][ny] = 0; // Ставим путь
-                makePaths(nx, ny);
+                makePaths(nx, ny); // ЗДесь сама рекурсия
             }
         }
     }
     maze[1][1] = 0; // Старт
-    makePaths(1, 1); // Запуск создания проходов
+    makePaths(1, 1); 
     maze[r - 2][c - 2] = 0; // Финиш
     return maze; 
 }
@@ -46,18 +44,38 @@ function shuffle(array) {
 // Функция рисования лабиринта
 function drawMaze(rows, cols) {
     let mazeDiv = document.getElementById('maze'); 
-    mazeDiv.innerHTML = ''; // Обнуляем старое, если оно было
-    mazeDiv.style.gridTemplateColumns = `repeat(${cols}, 20px)`; //Сетка
+    mazeDiv.innerHTML = ''; 
+    mazeDiv.style.gridTemplateColumns = `repeat(${cols}, 20px)`; 
     // Цикл для стилизации строк и колонок
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             let cell = document.createElement('div'); // Ячейка
             cell.classList.add('cell'); 
-            if (maze[i][j] === 0) cell.classList.add('path'); // Путь
-            if (i === 1 && j === 1) cell.classList.add('start'); // Старт
-            if (i === rows - 2 && j === cols - 2) cell.classList.add('end'); // Крнец
-            cell.id = `cell-${i}-${j}`; // Уникальный ID
-            mazeDiv.appendChild(cell); // Добавляем в контейнер
+            if (maze[i][j] === 0) cell.classList.add('path'); 
+            if (i === 1 && j === 1) cell.classList.add('start'); 
+            if (i === rows - 2 && j === cols - 2) cell.classList.add('end'); 
+            cell.id = `cell-${i}-${j}`; 
+            mazeDiv.appendChild(cell); 
         }
     }
+}
+
+// Функция самой рекурсии для поиска правильного выхода
+function go(x, y, rows, cols, visited = {}) {
+    if (x < 0 || y < 0 || x >= rows || y >= cols) return false; // Чтобы не выйти за пределы
+    if (maze[x][y] === 1) return false; // стена
+    let key = `${x},${y}`; // ключ для каждой клетки
+    if (visited[key]) return false; 
+    visited[key] = true; 
+    path.push([x, y]); // Добавляем в путь
+    if (x === rows - 2 && y === cols - 2) return true; // Финиш
+    // Пробуем двигаться по сторонам
+    let dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+    for (let i = 0; i < dirs.length; i++) {
+        let dx = dirs[i][0];
+        let dy = dirs[i][1];
+        if (go(x + dx, y + dy, rows, cols, visited)) return true; // Рекурсивное движение
+    }
+    path.pop(); // Если не получилось, то обнуляем путь
+    return false;
 }
