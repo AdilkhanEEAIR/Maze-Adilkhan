@@ -1,5 +1,17 @@
 let maze = [];
 let path = []; 
+function start() {
+    let rows = parseInt(document.getElementById('rows').value);
+    let cols = parseInt(document.getElementById('cols').value);
+    if (rows % 2 === 0) rows++;
+    if (cols % 2 === 0) cols++;
+    maze = makeMaze(rows, cols); 
+    drawMaze(rows, cols);
+    path = [];                
+    go(1, 1, rows, cols); 
+    show(0);            
+}
+
 function makeMaze(r,c){
     let m =[];
     //Заполнение стенами
@@ -10,8 +22,10 @@ function makeMaze(r,c){
         }
         m.push(row); // Добавляем строку в лабиринт
     }
+    maze = m;
+
     //Рекурсия для создания лабиринта
-    function makePath(x,y){
+    function makePaths(x,y){
         let dirs = shuffle([[0, -2], [0, 2], [-2, 0], [2, 0]]); // Случайные направления
         for (let i = 0; i < dirs.length; i++) {
             let dx = dirs[i][0]; 
@@ -41,6 +55,7 @@ function shuffle(array) {
     }
     return array;
 }
+
 // Функция рисования лабиринта
 function drawMaze(rows, cols) {
     let mazeDiv = document.getElementById('maze'); 
@@ -88,7 +103,6 @@ function show(i) {
     let [x, y] = path[i]; // Координаты
     let cell = document.getElementById(`cell-${x}-${y}`); 
     if (cell) {
-        // Добавление и удаление игрока
         cell.classList.add('player'); 
         setTimeout(() => {
             cell.classList.remove('player'); 
