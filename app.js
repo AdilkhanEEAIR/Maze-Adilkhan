@@ -1,7 +1,7 @@
 let maze = [];
 let path = []; 
 function makeMaze(r,c){
-    let m =[]; // Создаем пустой массив
+    let m =[];
     //Заполнение стенами
     for(let i=0;i<r;i++){
        let row = [];
@@ -78,4 +78,21 @@ function go(x, y, rows, cols, visited = {}) {
     }
     path.pop(); // Если не получилось, то обнуляем путь
     return false;
+}
+// Функция для анимирования движения
+function show(i) {
+    if (i >= path.length) {
+        alert("Лабиринт пройден!"); 
+        return;
+    }
+    let [x, y] = path[i]; // Координаты
+    let cell = document.getElementById(`cell-${x}-${y}`); 
+    if (cell) {
+        // Добавление и удаление игрока
+        cell.classList.add('player'); 
+        setTimeout(() => {
+            cell.classList.remove('player'); 
+            show(i + 1); 
+        }, 100);
+    }
 }
